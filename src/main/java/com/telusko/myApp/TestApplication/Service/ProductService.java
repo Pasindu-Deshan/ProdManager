@@ -1,14 +1,20 @@
 package com.telusko.myApp.TestApplication.Service;
 
 import com.telusko.myApp.TestApplication.Model.Product;
+import com.telusko.myApp.TestApplication.Repository.ProductRepo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService {
+
+    @Autowired
+    ProductRepo productRepo;
 
     List<Product> products = new ArrayList<> (Arrays.asList(
             new Product(001, "Iphone 14", 200000),
@@ -18,37 +24,22 @@ public class ProductService {
     ));
 
     public List<Product> getProducts(){
-        return products;
+        return productRepo.findAll();
     }
 
     public Product getProductByID(int prodID) {
-        return products.stream()
-                .filter(p -> p.getProductID() == prodID)
-                .findFirst()
-                .orElse(new Product(5, "No Product", 0));
+        return productRepo.findById(prodID).orElse(new Product());
     }
 
     public void addProduct(Product product) {
-        products.add(product);
+        productRepo.save(product);
     }
 
     public void updateProduct(Product product) {
-        int index = 0;
-        for (int i = 0; i < products.size(); i++){
-            if (products.get(i).getProductID() == product.getProductID()){
-                index = i;
-            }
-        }
-        products.set(index, product);
+        productRepo.save(product);
     }
 
     public void deleteProduct(int productID) {
-        int index = 0;
-        for (int i = 0; i < products.size(); i++){
-            if (products.get(i).getProductID() == productID){
-                index = i;
-            }
-        }
-        products.remove(index);
+        productRepo.deleteById(productID);
     }
 }

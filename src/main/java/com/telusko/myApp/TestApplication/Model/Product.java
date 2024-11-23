@@ -1,7 +1,14 @@
 package com.telusko.myApp.TestApplication.Model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import org.springframework.stereotype.Component;
+
+@Component
+@Entity
 public class Product {
 
+    @Id
     private int productID;
     private String productName;
     private int price;
@@ -10,6 +17,10 @@ public class Product {
         this.productID = productID;
         this.productName = productName;
         this.price = price;
+    }
+
+    public Product() {
+
     }
 
     public int getProductID() {
