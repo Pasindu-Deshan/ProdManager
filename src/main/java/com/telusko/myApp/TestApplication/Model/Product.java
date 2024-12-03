@@ -1,58 +1,39 @@
 package com.telusko.myApp.TestApplication.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
-@Component
+import java.math.BigDecimal;
+import java.util.Date;
+
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class Product {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int productID;
     private String productName;
-    private int price;
+    private String desc;
+    private String brand;
+    private BigDecimal price;
+    private String category;
 
-    public Product(int productID, String productName, int price) {
-        this.productID = productID;
-        this.productName = productName;
-        this.price = price;
-    }
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    private Date releaseDate;
+    private boolean available;
+    private int quantity;
 
-    public Product() {
+    private String imageName;
+    private String imageType;
 
-    }
+    @Lob
+    private byte[] imageData;
 
-    public int getProductID() {
-        return productID;
-    }
-
-    public void setProductID(int productID) {
-        this.productID = productID;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    @Override
-    public String toString() {
-        return "Product{" +
-                "productID=" + productID +
-                ", productName='" + productName + '\'' +
-                ", price=" + price +
-                '}';
-    }
 }
