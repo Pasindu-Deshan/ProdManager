@@ -4,6 +4,7 @@ import com.telusko.myApp.TestApplication.Model.Product;
 import com.telusko.myApp.TestApplication.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -50,6 +51,7 @@ public class ProductController {
         productService.deleteProduct(prodID);
     }
 
+    @PostMapping("product/")
     public ResponseEntity<?> addProduct(@RequestPart Product product, @RequestPart MultipartFile imageFile){
         try {
             Product product1 = productService.addProduct(product, imageFile);
@@ -57,5 +59,13 @@ public class ProductController {
         } catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping("product/{productID}/image")
+    public ResponseEntity<byte[]> getImageByProductId(@PathVariable int productID){
+        Product product = productService.getProductByID(productID);
+        byte[] imageFile = product.getImageData();
+
+        return ResponseEntity.ok().contentType(MediaType.valueOf(product.getImageType())).body(imageFile);
     }
 }
